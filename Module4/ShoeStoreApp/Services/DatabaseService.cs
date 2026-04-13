@@ -105,7 +105,6 @@ namespace ShoeStoreApp.Services
             }
             return products;
         }
-        // Добавьте эти методы в конец класса DatabaseService
 
         public List<dynamic> GetCategories()
         {
@@ -223,8 +222,7 @@ namespace ShoeStoreApp.Services
             using (var conn = new NpgsqlConnection(ConnectionString))
             {
                 conn.Open();
-
-                // Проверка наличия в заказах
+                
                 string checkSql = "SELECT COUNT(*) FROM OrderDetails WHERE ProductID = @productId";
                 using (var checkCmd = new NpgsqlCommand(checkSql, conn))
                 {
@@ -245,7 +243,6 @@ namespace ShoeStoreApp.Services
                 }
             }
         }
-        // ========== МОДУЛЬ 4: РАБОТА С ЗАКАЗАМИ ==========
 
         public List<dynamic> GetAllOrders()
         {
