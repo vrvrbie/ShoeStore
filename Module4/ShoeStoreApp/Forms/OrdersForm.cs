@@ -18,8 +18,8 @@ namespace ShoeStoreApp.Forms
         {
             currentUser = user;
             dbService = new DatabaseService();
-            InitializeComponent(); // оставляем стандартный вызов
-            CreateControls();      // наш метод
+            InitializeComponent();
+            CreateControls();   
             LoadOrders();
             SetPermissions();
             string iconPath = @"C:\Users\варёк\source\repos\ShoeStoreApp\ShoeStoreApp\Resources\Icon.ico";
