@@ -27,7 +27,6 @@ namespace ShoeStoreApp.Forms
             this.BorderStyle = BorderStyle.FixedSingle;
             this.Margin = new Padding(5);
 
-            // Фото
             PictureBox pbImage = new PictureBox() { Location = new Point(5, 5), Size = new Size(100, 100), SizeMode = PictureBoxSizeMode.Zoom };
             string placeholderPath = Path.Combine(Application.StartupPath, "Resources", "picture.png");
             if (!string.IsNullOrEmpty(product.ImagePath) && File.Exists(product.ImagePath))
@@ -37,7 +36,6 @@ namespace ShoeStoreApp.Forms
             }
             else if (File.Exists(placeholderPath)) pbImage.Image = Image.FromFile(placeholderPath);
 
-            // Информация о товаре (сдвинули влево)
             Label lblName = new Label() { Text = product.Name, Location = new Point(115, 5), Size = new Size(280, 25), Font = new Font("Times New Roman", 10, FontStyle.Bold) };
             Label lblCategory = new Label() { Text = $"📁 {product.CategoryName}", Location = new Point(115, 30), Size = new Size(280, 20), Font = new Font("Times New Roman", 8) };
             Label lblManufacturer = new Label() { Text = $"🏭 {product.ManufacturerName}", Location = new Point(115, 50), Size = new Size(280, 20), Font = new Font("Times New Roman", 8) };
@@ -47,11 +45,9 @@ namespace ShoeStoreApp.Forms
             if (desc.Length > 55) desc = desc.Substring(0, 52) + "...";
             Label lblDescription = new Label() { Text = desc, Location = new Point(115, 90), Size = new Size(280, 25), Font = new Font("Times New Roman", 7, FontStyle.Italic) };
 
-            // Цена и остальное (сдвинули влево)
             Label lblStock = new Label() { Text = $"📊 На складе: {product.QuantityInStock} {product.Unit}", Location = new Point(420, 50), Size = new Size(180, 25), Font = new Font("Times New Roman", 9) };
             Label lblDiscount = new Label() { Text = product.DiscountPercent > 0 ? $"🎯 Скидка: {product.DiscountPercent}%" : "", Location = new Point(420, 75), Size = new Size(180, 25), Font = new Font("Times New Roman", 9), ForeColor = Color.DarkGreen };
 
-            // Цена
             if (product.DiscountPercent > 0)
             {
                 Label lblOldPrice = new Label() { Text = $"{product.Price:F2} руб.", Location = new Point(420, 5), Size = new Size(120, 20), Font = new Font("Times New Roman", 9, FontStyle.Strikeout), ForeColor = Color.Red };
@@ -74,10 +70,8 @@ namespace ShoeStoreApp.Forms
             this.Controls.Add(lblStock);
             this.Controls.Add(lblDiscount);
 
-            // ========== КНОПКИ ДЛЯ АДМИНИСТРАТОРА ==========
             if (currentUser.RoleID == 4)
             {
-                // Кнопка Редактировать (придвинули ближе)
                 Button btnEdit = new Button()
                 {
                     Text = "✏️",
@@ -95,7 +89,6 @@ namespace ShoeStoreApp.Forms
                     }
                 };
 
-                // Кнопка Удалить (придвинули ближе)
                 Button btnDelete = new Button()
                 {
                     Text = "🗑️",
@@ -120,7 +113,6 @@ namespace ShoeStoreApp.Forms
                 this.Controls.Add(btnDelete);
             }
 
-            // Подсветка фона
             if (product.IsHighDiscount)
             {
                 this.BackColor = Color.FromArgb(46, 139, 87);
