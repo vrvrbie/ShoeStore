@@ -39,7 +39,6 @@ namespace ShoeStoreApp.Forms
                 this.Icon = new Icon(iconPath);
             }
 
-            // ========== ВЕРХНЯЯ ПАНЕЛЬ ==========
             Panel topPanel = new Panel() { Dock = DockStyle.Top, Height = 45, BackColor = Color.FromArgb(127, 255, 0) };
 
             lblUserInfo = new Label()
@@ -66,7 +65,6 @@ namespace ShoeStoreApp.Forms
             topPanel.Controls.Add(lblUserInfo);
             topPanel.Controls.Add(btnLogout);
 
-            // Кнопка "Добавить товар" (только админ)
             if (currentUser.RoleID == 4)
             {
                 btnAddProduct = new Button()
@@ -84,13 +82,12 @@ namespace ShoeStoreApp.Forms
                 };
                 topPanel.Controls.Add(btnAddProduct);
             }
-            // Кнопка "Заказы" (для менеджера и администратора)
             if (currentUser.RoleID == 3 || currentUser.RoleID == 4)
             {
                 Button btnOrders = new Button()
                 {
                     Text = "📋 Заказы",
-                    Location = new Point(550, 10),   // левее кнопки "Добавить товар"
+                    Location = new Point(550, 10),   
                     Size = new Size(100, 27),
                     BackColor = Color.FromArgb(0, 250, 154),
                     Font = new Font("Times New Roman", 9)
@@ -102,8 +99,7 @@ namespace ShoeStoreApp.Forms
                 };
                 topPanel.Controls.Add(btnOrders);
             }
-
-            // ========== ПАНЕЛЬ ПОИСКА (только менеджер и админ) ==========
+            
             Panel searchPanel = null;
             if (currentUser.RoleID == 3 || currentUser.RoleID == 4)
             {
@@ -131,12 +127,10 @@ namespace ShoeStoreApp.Forms
                 searchPanel.Controls.Add(cbSort);
             }
 
-            // ========== ПАНЕЛЬ С ТОВАРАМИ ==========
             Panel scrollPanel = new Panel() { Dock = DockStyle.Fill, AutoScroll = true, BackColor = Color.White };
             flowProducts = new FlowLayoutPanel() { Dock = DockStyle.Fill, FlowDirection = FlowDirection.TopDown, WrapContents = false, AutoScroll = true, BackColor = Color.White };
             scrollPanel.Controls.Add(flowProducts);
 
-            // ========== ДОБАВЛЯЕМ НА ФОРМУ (СНИЗУ ВВЕРХ) ==========
             this.Controls.Add(scrollPanel);
             if (searchPanel != null) this.Controls.Add(searchPanel);
             this.Controls.Add(topPanel);
