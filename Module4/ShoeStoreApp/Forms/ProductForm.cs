@@ -34,7 +34,6 @@ namespace ShoeStoreApp.Forms
             CreateControls();
             LoadComboBoxes();
 
-            // ЕСЛИ РЕДАКТИРУЕМ - ЗАГРУЖАЕМ ДАННЫЕ ИЗ БД
             if (editingProduct != null)
             {
                 LoadProductData();
@@ -48,7 +47,6 @@ namespace ShoeStoreApp.Forms
             int labelWidth = 100;
             int controlWidth = 350;
 
-            // ID товара (только для редактирования)
             if (editingProduct != null)
             {
                 Label lblId = new Label()
@@ -71,48 +69,36 @@ namespace ShoeStoreApp.Forms
                 y += 35;
             }
 
-            // Фото
             Label lblImage = new Label() { Text = "Фото:", Location = new Point(15, y), Size = new Size(labelWidth, 25) };
             pbImage = new PictureBox() { Location = new Point(left, y), Size = new Size(100, 100), SizeMode = PictureBoxSizeMode.Zoom, BorderStyle = BorderStyle.FixedSingle };
             Button btnLoadImage = new Button() { Text = "Загрузить фото", Location = new Point(left + 110, y + 35), Size = new Size(120, 30) };
             btnLoadImage.Click += BtnLoadImage_Click;
             y += 115;
 
-            // Артикул
             AddLabelAndTextBox("Артикул:", ref y, left, controlWidth, out txtArticle);
 
-            // Наименование
             AddLabelAndTextBox("Наименование:*", ref y, left, controlWidth, out txtName);
 
-            // Категория
             AddLabelAndComboBox("Категория:*", ref y, left, controlWidth, out cbCategory);
 
-            // Производитель
             AddLabelAndComboBox("Производитель:*", ref y, left, controlWidth, out cbManufacturer);
 
-            // Поставщик
             AddLabelAndComboBox("Поставщик:*", ref y, left, controlWidth, out cbSupplier);
 
-            // Цена
             AddLabelAndTextBox("Цена:*", ref y, left, controlWidth, out txtPrice);
 
-            // Единица измерения
             AddLabelAndTextBox("Ед. измерения:", ref y, left, controlWidth, out txtUnit);
             txtUnit.Text = "шт";
 
-            // Количество
             AddLabelAndTextBox("Количество:*", ref y, left, controlWidth, out txtQuantity);
 
-            // Скидка
             AddLabelAndTextBox("Скидка (%):", ref y, left, controlWidth, out txtDiscount);
             txtDiscount.Text = "0";
 
-            // Описание
             Label lblDescription = new Label() { Text = "Описание:", Location = new Point(15, y), Size = new Size(labelWidth, 25) };
             txtDescription = new TextBox() { Location = new Point(left, y), Size = new Size(controlWidth, 60), Multiline = true };
             y += 75;
 
-            // Кнопки
             Button btnSave = new Button() { Text = "Сохранить", Location = new Point(150, y), Size = new Size(100, 35), BackColor = Color.FromArgb(0, 250, 154) };
             btnSave.Click += BtnSave_Click;
             Button btnCancel = new Button() { Text = "Отмена", Location = new Point(270, y), Size = new Size(100, 35), BackColor = Color.LightGray };
@@ -147,19 +133,16 @@ namespace ShoeStoreApp.Forms
 
         private void LoadComboBoxes()
         {
-            // Категории
             cbCategory.DisplayMember = "CategoryName";
             cbCategory.ValueMember = "CategoryID";
             cbCategory.DataSource = dbService.GetCategories();
             cbCategory.SelectedIndex = -1;
 
-            // Производители
             cbManufacturer.DisplayMember = "ManufacturerName";
             cbManufacturer.ValueMember = "ManufacturerID";
             cbManufacturer.DataSource = dbService.GetManufacturers();
             cbManufacturer.SelectedIndex = -1;
 
-            // Поставщики
             cbSupplier.DisplayMember = "SupplierName";
             cbSupplier.ValueMember = "SupplierID";
             cbSupplier.DataSource = dbService.GetSuppliers();
@@ -168,7 +151,6 @@ namespace ShoeStoreApp.Forms
 
         private void LoadProductData()
         {
-            // Заполняем текстовые поля
             txtArticle.Text = editingProduct.Article;
             txtName.Text = editingProduct.Name;
             txtPrice.Text = editingProduct.Price.ToString("F2");
@@ -177,7 +159,6 @@ namespace ShoeStoreApp.Forms
             txtDiscount.Text = editingProduct.DiscountPercent.ToString();
             txtDescription.Text = editingProduct.Description;
 
-            // Выбираем нужную категорию в ComboBox
             for (int i = 0; i < cbCategory.Items.Count; i++)
             {
                 dynamic item = cbCategory.Items[i];
@@ -188,7 +169,6 @@ namespace ShoeStoreApp.Forms
                 }
             }
 
-            // Выбираем нужного производителя в ComboBox
             for (int i = 0; i < cbManufacturer.Items.Count; i++)
             {
                 dynamic item = cbManufacturer.Items[i];
@@ -199,7 +179,6 @@ namespace ShoeStoreApp.Forms
                 }
             }
 
-            // Выбираем нужного поставщика в ComboBox
             for (int i = 0; i < cbSupplier.Items.Count; i++)
             {
                 dynamic item = cbSupplier.Items[i];
@@ -210,7 +189,6 @@ namespace ShoeStoreApp.Forms
                 }
             }
 
-            // Загружаем фото
             if (!string.IsNullOrEmpty(editingProduct.ImagePath) && File.Exists(editingProduct.ImagePath))
             {
                 try
@@ -258,7 +236,6 @@ namespace ShoeStoreApp.Forms
 
         private void BtnSave_Click(object sender, EventArgs e)
         {
-            // Проверка обязательных полов
             if (string.IsNullOrWhiteSpace(txtName.Text))
             {
                 MessageHelper.ShowWarning("Введите наименование товара!");
@@ -300,7 +277,6 @@ namespace ShoeStoreApp.Forms
                 }
             }
 
-            // Получаем ID из выбранных элементов ComboBox
             dynamic selectedCategory = cbCategory.SelectedItem;
             dynamic selectedManufacturer = cbManufacturer.SelectedItem;
             dynamic selectedSupplier = cbSupplier.SelectedItem;
@@ -312,7 +288,6 @@ namespace ShoeStoreApp.Forms
             bool success;
             if (editingProduct == null)
             {
-                // Добавление нового товара
                 success = dbService.AddProduct(
                     txtArticle.Text.Trim(),
                     txtName.Text.Trim(),
@@ -330,7 +305,6 @@ namespace ShoeStoreApp.Forms
             }
             else
             {
-                // Обновление существующего товара
                 success = dbService.UpdateProduct(
                     editingProduct.ProductID,
                     txtArticle.Text.Trim(),
